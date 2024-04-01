@@ -7,7 +7,7 @@ typedef struct element{
 	struct element *sledeci;
 }Element;
 
-//==================|
+//===================|
 //KLASICNE OPERACIJE|
 //==================|
 
@@ -34,6 +34,7 @@ Element *dodajNaKraj(Element *lista, int x){
     Element *glava=lista;
     Element *novi=(Element*)malloc(sizeof(Element));
     novi->podatak=x;
+    novi->sledeci=NULL;
     if(lista==NULL)return novi;
     while(lista->sledeci!=NULL){
         lista=lista->sledeci;
@@ -50,7 +51,7 @@ Element *dodajNaPocetak(Element *lista, int x){
 	return lista;
 }
 
-//==================|
+//===================|
 //NAPREDNE OPERACIJE|
 //==================|
 
@@ -133,7 +134,7 @@ Element *duplirajE(Element *lista, int e) {
     return lista;
 }
 
-//================|
+//=================|
 //PROVERE ZA LISTE|
 //================|
 
@@ -156,12 +157,56 @@ int prRastuci(Element *lista){
     return 0;
 }
 
+//=======================|
+//OPERACIJE KRUZNE LISTE|
+//======================|
 
+Element *praviKruznu(Element *lista){
+	Element *glava=lista;
+	do{
+	lista=lista->sledeci;
+	}while(lista->sledeci!=NULL);
+	lista->sledeci=glava;
+	return glava;
+}
+
+void stampajKruznu(Element *lista){
+	Element *glava=lista;
+	do{
+	printf("%i", lista->podatak);
+	lista=lista->sledeci;
+	}while(lista!=glava);
+}
+
+
+//=====================|
+//PROVERE KRUZNA LISTA|
+//===================|
+
+int brParnihKruzna(Element *lista){
+	Element *glava=lista;
+	int pr=0;
+	do{
+	if(lista->podatak%2==0)pr++;
+	lista=lista->sledeci;
+	}while(lista!=glava);
+	return pr;
+}
+
+int zbirKruzna(Element *lista){
+	Element *glava=lista;
+	int zbir=0;
+	do{
+	zbir += lista->podatak;
+	lista=lista->sledeci;
+	}while(lista!=glava);
+	return zbir;
+}
 
 //MAIN//
 
 int main(){
-	Element *lista;
+	Element *lista=NULL;
 	int i, x, e;
 	for(i=0;i<5;i++){
 		printf("Unesi X");
@@ -170,8 +215,12 @@ int main(){
 
 	}
 	stampaj(lista);
-	lista=obrniListu(lista);
-    stampaj(lista);
+
+	printf("\n");
+	lista=praviKruznu(lista);
+        stampajKruznu(lista);
+	printf("\n");
+	printf("%i, %i", brParnihKruzna(lista), zbirKruzna(lista));
 	return 0;
 
 
