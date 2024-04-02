@@ -7,7 +7,7 @@ typedef struct element{
 	struct element *sledeci;
 }Element;
 
-//===================|
+//==================|
 //KLASICNE OPERACIJE|
 //==================|
 
@@ -30,8 +30,8 @@ void stampaj(Element *lista){
 	return;
 }
 
-Element *dodajNaKraj(Element *lista, int x){
-    Element *glava=lista;
+Element *dodajNaKraj(Element *glava, int x){
+    Element *lista=glava;
     Element *novi=(Element*)malloc(sizeof(Element));
     novi->podatak=x;
     novi->sledeci=NULL;
@@ -51,12 +51,12 @@ Element *dodajNaPocetak(Element *lista, int x){
 	return lista;
 }
 
-//===================|
+//==================|
 //NAPREDNE OPERACIJE|
 //==================|
 
-Element *dodajNaX(Element *lista, int X, int x){
-    Element *glava=lista;
+Element *dodajNaX(Element *glava, int X, int x){
+    Element *lista=glava;
     X--;
     Element *novi = (Element*)malloc(sizeof(Element));
     novi -> podatak = x;
@@ -80,23 +80,23 @@ Element *obrniListu(Element *lista){
 
 
 
-Element *obrisiE(Element *lista, int e){
+Element *obrisiE(Element *glava, int e){
     Element *brisi;
-    Element *tekuci=lista;
+    Element *tekuci=glava;
 
     while(tekuci->podatak==e){
         brisi=tekuci;
         tekuci=tekuci->sledeci;
         free(brisi);
     }
-
-    Element *glava=tekuci;
+    glava=tekuci;
     Element *cekaj=tekuci;
     while(tekuci!=NULL){
+      if(tekuci->podatak==e){
 
-        if(tekuci->podatak==e){
             while(tekuci->podatak==e){
                 if(tekuci->sledeci==NULL){
+
                     cekaj->sledeci=NULL;
                     free(tekuci);
                     return glava;
@@ -116,8 +116,8 @@ Element *obrisiE(Element *lista, int e){
 }
 
 
-Element *duplirajE(Element *lista, int e) {
-    Element *tekuci = lista;
+Element *duplirajE(Element *glava, int e) {
+    Element *tekuci = glava;
 
     while (tekuci != NULL) {
         if (tekuci->podatak == e) {
@@ -131,10 +131,10 @@ Element *duplirajE(Element *lista, int e) {
         }
     }
 
-    return lista;
+    return glava;
 }
 
-//=================|
+//================|
 //PROVERE ZA LISTE|
 //================|
 
@@ -143,10 +143,7 @@ int prIste(Element *lista1, Element *lista2){
             lista1=lista1->sledeci;
             lista2=lista2->sledeci;
     }
-    if(lista1==NULL&&lista2==NULL){
-        return 1;
-    }
-    return 0;
+    return(lista1==NULL && lista2==NULL);
 }
 
 int prRastuci(Element *lista){
@@ -157,21 +154,20 @@ int prRastuci(Element *lista){
     return 0;
 }
 
-//=======================|
+//======================|
 //OPERACIJE KRUZNE LISTE|
 //======================|
 
-Element *praviKruznu(Element *lista){
-	Element *glava=lista;
+void praviKruznu(Element *glava){
+	Element *lista=glava;
 	do{
 	lista=lista->sledeci;
 	}while(lista->sledeci!=NULL);
 	lista->sledeci=glava;
-	return glava;
 }
 
-void stampajKruznu(Element *lista){
-	Element *glava=lista;
+void stampajKruznu(Element *glava){
+	Element *lista=glava;
 	do{
 	printf("%i", lista->podatak);
 	lista=lista->sledeci;
@@ -179,12 +175,12 @@ void stampajKruznu(Element *lista){
 }
 
 
-//=====================|
+//====================|
 //PROVERE KRUZNA LISTA|
-//===================|
+//====================|
 
-int brParnihKruzna(Element *lista){
-	Element *glava=lista;
+int brParnihKruzna(Element *glava){
+	Element *lista=glava;
 	int pr=0;
 	do{
 	if(lista->podatak%2==0)pr++;
@@ -193,8 +189,8 @@ int brParnihKruzna(Element *lista){
 	return pr;
 }
 
-int zbirKruzna(Element *lista){
-	Element *glava=lista;
+int zbirKruzna(Element *glava){
+	Element *lista=glava;
 	int zbir=0;
 	do{
 	zbir += lista->podatak;
@@ -202,6 +198,48 @@ int zbirKruzna(Element *lista){
 	}while(lista!=glava);
 	return zbir;
 }
+
+int proizvodKruzna(Element *glava){
+	Element *lista=glava;
+	int p=1;
+	do{
+	if(lista->podatak <100)p=p* lista->podatak;
+	lista=lista->sledeci;
+	}while(lista!=glava);
+	return p;
+}
+
+float prosekKruzne(Element *glava){
+	Element *lista=glava;
+	int n=0, s=0;
+	do{
+	n++;
+	s=s+lista->podatak;
+	lista=lista->sledeci;
+	}while(lista!=glava);
+	return s*1.0 / n;
+}
+
+int minimumKruzna(Element *glava){
+	Element *lista=glava;
+	int min=lista->podatak;
+	do{
+	if(lista->podatak<min)min=lista->podatak;
+	lista=lista->sledeci;
+	}while(lista!=glava);
+	return min;
+}
+
+int maksimumKruzna(Element *glava){
+        Element *lista=glava;
+        int max=lista->podatak;
+        do{
+        if(lista->podatak>max)max=lista->podatak;
+        lista=lista->sledeci;
+        }while(lista!=glava);
+        return max;
+}
+
 
 //MAIN//
 
@@ -217,10 +255,10 @@ int main(){
 	stampaj(lista);
 
 	printf("\n");
-	lista=praviKruznu(lista);
+	praviKruznu(lista);
         stampajKruznu(lista);
 	printf("\n");
-	printf("%i, %i", brParnihKruzna(lista), zbirKruzna(lista));
+	printf("%i, %i, %f, %i, %i, %i", brParnihKruzna(lista), zbirKruzna(lista), prosekKruzne(lista), proizvodKruzna(lista), minimumKruzna(lista), maksimumKruzna(lista));
 	return 0;
 
 
