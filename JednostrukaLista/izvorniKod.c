@@ -174,6 +174,35 @@ void stampajKruznu(Element *glava){
 	}while(lista!=glava);
 }
 
+Element* dodajNaKrajKruzne(Element *glava, int x){
+	Element *lista=glava;
+	Element *novi=(Element*)malloc(sizeof(Element));
+	novi->podatak=x;
+	if(lista==NULL){
+		return novi;
+	}
+	novi->sledeci=glava;
+	do{
+	lista=lista->sledeci;
+	}while(lista->sledeci!=glava);
+	lista->sledeci=novi;
+	return glava;
+}
+
+Element* dodajNaPocetakKruzne(Element *glava, int x){
+	Element *novi=(Element*)malloc(sizeof(Element));
+	novi->podatak=x;
+	if(glava==NULL){
+		return novi;
+	}
+	novi->sledeci=glava;
+	Element *lista=novi;
+	do{
+	lista=lista->sledeci;
+	}while(lista->sledeci!=glava);
+	lista->sledeci=novi;
+	return novi;
+}
 
 //====================|
 //PROVERE KRUZNA LISTA|
@@ -246,16 +275,17 @@ int maksimumKruzna(Element *glava){
 int main(){
 	Element *lista=NULL;
 	int i, x, e;
+	lista=dodajNaKrajKruzne(lista, 0);
+	lista=dodajNaKraj(lista ,0);
+	stampaj(lista);	
+	praviKruznu(lista);
 	for(i=0;i<5;i++){
 		printf("Unesi X");
 		scanf("%i", &x);
-		lista=dodajNaKraj(lista, x);
-
+		lista=dodajNaKrajKruzne(lista, x);
+		lista=dodajNaPocetakKruzne(lista, x);
 	}
-	stampaj(lista);
-
 	printf("\n");
-	praviKruznu(lista);
         stampajKruznu(lista);
 	printf("\n");
 	printf("%i, %i, %f, %i, %i, %i", brParnihKruzna(lista), zbirKruzna(lista), prosekKruzne(lista), proizvodKruzna(lista), minimumKruzna(lista), maksimumKruzna(lista));
