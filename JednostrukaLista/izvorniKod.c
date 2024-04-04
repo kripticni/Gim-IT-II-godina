@@ -69,13 +69,26 @@ Element *dodajNaX(Element *glava, int X, int x){
     return glava;
 }
 
-Element *obrniListu(Element *lista){
+Element *sporoObrniListu(Element *lista){
     Element *obrnuta=NULL;
     while(lista!=NULL){
         obrnuta = dodajNaPocetak(obrnuta, lista->podatak);
         lista=lista->sledeci;
     }
     return obrnuta;
+}
+
+Element *obrniListu(Element *tekuci){
+	Element *prosli=NULL;
+	Element *buduci=tekuci->sledeci;
+	while(buduci!=NULL){
+		tekuci->sledeci=prosli;
+		prosli=tekuci;
+		tekuci=buduci;
+		buduci=buduci->sledeci;
+	}
+	tekuci->sledeci=prosli;
+	return tekuci;
 }
 
 
@@ -164,6 +177,15 @@ void praviKruznu(Element *glava){
 	lista=lista->sledeci;
 	}while(lista->sledeci!=NULL);
 	lista->sledeci=glava;
+}
+
+
+void rasturiKruznu(Element *glava){
+	Element *lista=glava;
+	do{
+	lista=lista->sledeci;
+	}while(lista->sledeci!=glava);
+	lista->sledeci=NULL;
 }
 
 void stampajKruznu(Element *glava){
@@ -275,20 +297,24 @@ int maksimumKruzna(Element *glava){
 int main(){
 	Element *lista=NULL;
 	int i, x, e;
-	lista=dodajNaKrajKruzne(lista, 0);
-	lista=dodajNaKraj(lista ,0);
-	stampaj(lista);	
-	praviKruznu(lista);
 	for(i=0;i<5;i++){
 		printf("Unesi X");
 		scanf("%i", &x);
-		lista=dodajNaKrajKruzne(lista, x);
-		lista=dodajNaPocetakKruzne(lista, x);
+		lista=dodajNaPocetak(lista, x);
 	}
 	printf("\n");
-        stampajKruznu(lista);
+        stampaj(lista);
+	lista=obrniListu(lista);
 	printf("\n");
-	printf("%i, %i, %f, %i, %i, %i", brParnihKruzna(lista), zbirKruzna(lista), prosekKruzne(lista), proizvodKruzna(lista), minimumKruzna(lista), maksimumKruzna(lista));
+	stampaj(lista);
+	printf("\n");
+	praviKruznu(lista); //sad je kruzna
+	lista=dodajNaKrajKruzne(lista, 9);
+	stampajKruznu(lista);
+	printf("\n");
+	rasturiKruznu(lista); //sad nije
+	stampaj(lista);
+
 	return 0;
 
 
