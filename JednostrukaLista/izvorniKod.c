@@ -55,6 +55,33 @@ Element *dodajNaPocetak(Element *lista, int x){
 //NAPREDNE OPERACIJE|
 //==================|
 
+int vratiSredinu(Element *spori){
+	Element *brzi=spori;
+	while(brzi->sledeci!=NULL){
+	brzi=brzi->sledeci;
+	if (brzi->sledeci == NULL)
+    		return spori->podatak;
+	else
+        	brzi = brzi->sledeci;
+	spori=spori->sledeci;
+	}
+	return spori->podatak;
+}
+
+Element* srednjiCvor(Element *spori){
+        Element *brzi=spori;
+        while(brzi->sledeci!=NULL){
+        brzi=brzi->sledeci;
+        if (brzi->sledeci == NULL)
+                return spori;
+        else
+                brzi = brzi->sledeci;
+        spori=spori->sledeci;
+        }
+        return spori;
+}
+
+
 Element *dodajNaX(Element *glava, int X, int x){
     Element *lista=glava;
     X--;
@@ -150,6 +177,21 @@ Element *duplirajE(Element *glava, int e) {
 //================|
 //PROVERE ZA LISTE|
 //================|
+
+int prPalindrom(Element *glava){
+	Element *prva=glava;
+	Element *druga=obrniListu(srednjiCvor(glava));
+	//printf("\n");
+	//stampaj(prva);
+	//stampaj(druga);
+	while(prva!=NULL){
+	if(prva->podatak!=druga->podatak)return 0;
+	prva=prva->sledeci;
+	druga=druga->sledeci;
+	}
+	return 1;
+}
+
 
 int prIste(Element *lista1, Element *lista2){
     while(lista1!=NULL&&lista1->podatak==lista2->podatak){
@@ -304,17 +346,8 @@ int main(){
 	}
 	printf("\n");
         stampaj(lista);
-	lista=obrniListu(lista);
-	printf("\n");
-	stampaj(lista);
-	printf("\n");
-	praviKruznu(lista); //sad je kruzna
-	lista=dodajNaKrajKruzne(lista, 9);
-	stampajKruznu(lista);
-	printf("\n");
-	rasturiKruznu(lista); //sad nije
-	stampaj(lista);
 
+	(prPalindrom(lista))?printf("Palindrom je"):printf("Nije palindrom");
 	return 0;
 
 
