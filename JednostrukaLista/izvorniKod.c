@@ -55,6 +55,38 @@ Element *dodajNaPocetak(Element *lista, int x){
 //NAPREDNE OPERACIJE|
 //==================|
 
+Element* dodajNaSortiranu(Element *glava, int x){
+	Element *novi=(Element*)malloc(sizeof(Element));
+	novi->podatak=x;
+
+	if(glava==NULL){
+		novi->sledeci=NULL;
+		return novi;
+	}
+
+	if(glava->podatak >= x){
+		novi->sledeci=glava;
+		return novi;
+	}
+
+	Element *lista=glava;
+	while(lista->sledeci->podatak <= x && lista->sledeci->sledeci != NULL){
+		lista=lista->sledeci;
+	}
+
+	if(lista->sledeci->sledeci==NULL && lista->sledeci->podatak < x){
+		lista=lista->sledeci;
+		novi->sledeci=NULL;
+		lista->sledeci=novi;
+		return glava;
+	} //u ovaj slucaj mora da ga umetne posle kraj
+
+	novi->sledeci=lista->sledeci;
+	lista->sledeci=novi;
+	return glava; //a u ovaj izmedju kraj
+}
+
+
 int vratiSredinu(Element *spori){
 	Element *brzi=spori;
 	while(brzi->sledeci!=NULL){
@@ -181,9 +213,9 @@ Element *duplirajE(Element *glava, int e) {
 int prPalindrom(Element *glava){
 	Element *prva=glava;
 	Element *druga=obrniListu(srednjiCvor(glava));
-	//printf("\n");
-	//stampaj(prva);
-	//stampaj(druga);
+	printf("\n");
+	stampaj(prva);
+	stampaj(druga);
 	while(prva!=NULL){
 	if(prva->podatak!=druga->podatak)return 0;
 	prva=prva->sledeci;
@@ -338,16 +370,21 @@ int maksimumKruzna(Element *glava){
 
 int main(){
 	Element *lista=NULL;
-	int i, x, e;
-	for(i=0;i<5;i++){
+	int i, x, e, n;
+
+	printf("UNESI N: ");
+	scanf("%i", &n);
+
+	for(i=0;i<n;i++){
 		printf("Unesi X");
 		scanf("%i", &x);
 		lista=dodajNaPocetak(lista, x);
 	}
 	printf("\n");
         stampaj(lista);
-
-	(prPalindrom(lista))?printf("Palindrom je"):printf("Nije palindrom");
+	lista=dodajNaSortiranu(lista, 5);
+	printf("\n");
+	stampaj(lista);
 	return 0;
 
 
