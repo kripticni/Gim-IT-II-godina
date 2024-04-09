@@ -55,6 +55,32 @@ Element *dodajNaPocetak(Element *lista, int x){
 //NAPREDNE OPERACIJE|
 //==================|
 
+
+
+//i=0;i<n-1;i++
+//j=0;j<n-i-1;j++
+//if a[j] < a[min] then min = j
+//swap i, min
+Element* SelectionSort(Element *glava){
+    Element *i=glava;
+    Element *j;
+    Element *min;
+    int pom;
+    while(i!=NULL){
+        min=i;
+        j=i->sledeci;
+        while(j!=NULL){
+            if(j->podatak < min->podatak)min=j; // < za rastuci, > za opadajuci
+            j=j->sledeci;
+        }
+        pom=min->podatak;
+        min->podatak=i->podatak;
+        i->podatak=pom;
+        i=i->sledeci;
+    }
+    return glava;
+}
+
 Element* dodajNaSortiranu(Element *glava, int x){
 	Element *novi=(Element*)malloc(sizeof(Element));
 	novi->podatak=x;
@@ -67,6 +93,10 @@ Element* dodajNaSortiranu(Element *glava, int x){
 	if(glava->podatak >= x){
 		novi->sledeci=glava;
 		return novi;
+	}else if(glava->sledeci==NULL){ //iskljucivo za slucaj kad se unese x pa broj veci od x
+	    glava->sledeci=novi;        //jer bi lista->sledeci->sledeci dalo segmentation fault
+	    novi->sledeci=NULL;         //najverovatnije nece da trazi na test
+	    return glava;
 	}
 
 	Element *lista=glava;
@@ -381,14 +411,8 @@ int main(){
 		lista=dodajNaPocetak(lista, x);
 	}
 	printf("\n");
-        stampaj(lista);
-	lista=dodajNaSortiranu(lista, 5);
 	printf("\n");
+	lista=SelectionSort(lista);
 	stampaj(lista);
 	return 0;
-
-
 }
-
-
-
