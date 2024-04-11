@@ -129,8 +129,8 @@ void stampajKruznu(Element *glava){
 
 
 Samo smo radili jednu od funkcije ...KrajKruzne i ...PocetakKruzne,
-al ne secam se koju, svakako mislim da je najbolje da naucite obe
-najverovatnije gu briga koju smo ucili od ove dve
+al ne secam se koju, SVAKAKO, Biljana je rekla da je moguce da imamo 
+i jednu i drugu, preporucujem da se odgleda video, ovo se lako moze pogresi
 
 
 Element* dodajNaKrajKruzne(Element *glava, int x){
@@ -336,9 +336,9 @@ Element *obrisiE(Element *glava, int e){
 //FINALNA I NAJTEZA FUNKCIJA
 //==========================
 
-VERUJEM, da Biljana nece da ovo na test jer nije znala da ga uradi danas
-medjutim... u slucaju da ga da ovo je ispravna funckija koja radi za svaki
-slucaj, za ovu ce obavezno snimim video i posaljem na viber
+IPAK Biljana ima verovatno i ovo da da na test,
+jer smo ga zavrsili danas program na prvi cas,
+preporucujem da se pogleda video i da budete spremni za ovo.
 
 
 Element* dodajNaSortiranu(Element *glava, int x){
