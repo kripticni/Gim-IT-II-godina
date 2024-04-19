@@ -5,6 +5,44 @@ typedef struct delement
     int podatak;
     struct delement *levi,*desni;
 }Delement;
+
+Delement *dodajNaKrajDvostruke(Delement *glava, Delement **kraj, int n){
+	Delement *novi=(Delement*)malloc(sizeof(Delement));
+	if(novi==NULL){
+		printf("Greska.");
+		exit(1);
+	}
+	novi->podatak=n;
+	novi->desni=NULL;
+	if(glava==NULL){
+		(*kraj)=novi;
+		return novi;
+	}
+	novi->levi=*kraj;
+	(*kraj)->desni=novi;
+	(*kraj)=novi;
+	return glava;
+}
+
+Delement *dodajNaPocetakDvostruke(Delement *glava, int n){
+	Delement *novi=(Delement*)malloc(sizeof(Delement));
+	if(novi==NULL){
+		printf("Greska.");
+		exit(1);
+	}
+	novi->podatak=n;
+	novi->levi=NULL;
+	if(glava==NULL){
+		novi->desni=NULL;
+		return novi;
+	}
+	novi->desni=glava;
+	glava->levi=novi;
+	return novi;
+}
+
+
+
 Delement *dodajnapocetak(Delement *p,Delement **q,int n)//dodaj na kraj(pogresan naziv)
 {
     Delement *pom=(Delement*)malloc(sizeof(Delement));
@@ -81,6 +119,32 @@ void SortirajD(Delement *pocetak)
         pi=pi->desni;
     }
 }
+
+//i=0;i<n-1;i++
+//j=0;j<n-i-1;j++
+//if a[j] < a[min] then min = j
+//swap i, min
+Delement* SelectionSort(Delement *glava){
+    Delement *i=glava;
+    Delement *j;
+    Delement *min;
+    int pom;
+    while(i!=NULL){
+        min=i;
+        j=i->desni;
+        while(j!=NULL){
+            if(j->podatak < min->podatak)min=j; // < za rastuci, > za opadajuci
+            j=j->desni;
+        }
+        pom=min->podatak;
+        min->podatak=i->podatak;
+        i->podatak=pom;
+        i=i->desni;
+    }
+    return glava;
+}
+
+
 
 int main()
 {
