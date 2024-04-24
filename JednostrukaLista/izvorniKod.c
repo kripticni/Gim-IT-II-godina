@@ -43,12 +43,11 @@ Element *dodajNaKraj(Element *glava, int x){
     return glava;
 }
 
-Element *dodajNaPocetak(Element *lista, int x){
+Element *dodajNaPocetak(Element *glava, int x){
 	Element *novi=(Element*)malloc(sizeof(Element));
-	novi -> sledeci = lista;
+	novi -> sledeci = glava;
 	novi -> podatak = x;
-	lista=novi;
-	return lista;
+	return novi;
 }
 
 //==================|
@@ -93,14 +92,14 @@ Element* dodajNaSortiranu(Element *glava, int x){
 	if(glava->podatak >= x){
 		novi->sledeci=glava;
 		return novi;
-	}else if(glava->sledeci==NULL){ //iskljucivo za slucaj kad se unese x pa broj veci od x
+	}else if(glava->sledeci==NULL){ //ovo je provera, da li lista ima vise od jedan element, iskljucivo za slucaj kad se unese x pa broj veci od x
 	    glava->sledeci=novi;        //jer bi lista->sledeci->sledeci dalo segmentation fault
 	    novi->sledeci=NULL;         //najverovatnije nece da trazi na test
 	    return glava;
 	}
 
 	Element *lista=glava;
-	while(lista->sledeci->podatak <= x && lista->sledeci->sledeci != NULL){
+	while(lista->sledeci->podatak  <= x && lista->sledeci->sledeci != NULL){
 		lista=lista->sledeci;
 	}
 
@@ -182,7 +181,7 @@ Element *obrniListu(Element *tekuci){
 
 
 
-Element *obrisiE(Element *glava, int e){
+Element *obrisiE(Element *glava, int e){ //dok je lista, ako je e, dok je e, ako je kraj
     Element *brisi;
     Element *tekuci=glava;
 
@@ -192,12 +191,12 @@ Element *obrisiE(Element *glava, int e){
         free(brisi);
     }
     glava=tekuci;
-    Element *cekaj=tekuci;
-    while(tekuci!=NULL){
-      if(tekuci->podatak==e){
+    Element *cekaj=tekuci; //cekaj sluzi, da pokazuje na zadnji element koji nije E
+    while(tekuci!=NULL){ //do kraj listu
+      if(tekuci->podatak==e){ //ako je podatak e
 
-            while(tekuci->podatak==e){
-                if(tekuci->sledeci==NULL){
+            while(tekuci->podatak==e){ //dok je podatak e
+                if(tekuci->sledeci==NULL){ //ako je kraj od listu
 
                     cekaj->sledeci=NULL;
                     free(tekuci);
@@ -209,7 +208,7 @@ Element *obrisiE(Element *glava, int e){
             }
             cekaj->sledeci=tekuci;
             cekaj=tekuci;
-        }else{
+        }else{ //ako tekuci podatak nije E
             cekaj=tekuci;
         }
         tekuci=tekuci->sledeci;
@@ -408,11 +407,10 @@ int main(){
 	for(i=0;i<n;i++){
 		printf("Unesi X");
 		scanf("%i", &x);
-		lista=dodajNaPocetak(lista, x);
+		lista=dodajNaSortiranu(lista, x);
 	}
 	printf("\n");
 	printf("\n");
-	lista=SelectionSort(lista);
 	stampaj(lista);
 	return 0;
 }

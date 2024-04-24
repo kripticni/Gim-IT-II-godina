@@ -15,6 +15,7 @@ Delement *dodajNaKrajDvostruke(Delement *glava, Delement **kraj, int n){
 	novi->podatak=n;
 	novi->desni=NULL;
 	if(glava==NULL){
+		novi->levi=NULL;
 		(*kraj)=novi;
 		return novi;
 	}
@@ -144,7 +145,36 @@ Delement* SelectionSort(Delement *glava){
     return glava;
 }
 
-
+Delement *obrisiIndex(Delement *glava, Delement **kraj, int x){
+	Delement* lista=glava;
+	x--;
+	if(x<=0){
+		glava=glava->desni;
+		glava->levi=NULL;
+		free(lista);
+		return glava;
+	}
+	lista=lista->desni;
+	x--;
+	while(x!=0){
+		if(lista->desni==NULL){
+			printf("Pogresan unos, X ne moze biti veci od velicine liste, nijedan element nije izbrisan");
+			return glava;
+		}
+		x--;
+		lista=lista->desni;	
+	}
+	if(lista==(*kraj)){
+		(*kraj)=(*kraj)->levi;
+		(*kraj)->desni=NULL;
+		free(lista);
+		return glava;
+	}
+	lista->levi->desni=lista->desni;
+	lista->desni->levi=lista->levi;
+	free(lista);
+	return glava;
+}
 
 int main()
 {
@@ -163,10 +193,9 @@ int main()
     printf("\n_________________________________\n\n");
     stampajdesno(pocetak);
     printf("\n_________________________________\n\n");
-    stampajdlevo(kraj);
-    SortirajD(pocetak);
-    printf("\n_________________________________\n\n");
-    stampajdesno(pocetak);
-    printf("\nDuzina liste je %d",brelm(pocetak));
+    printf("Izaberi element za brisanje: ");
+    scanf("%i",&x);
+    pocetak=obrisiIndex(pocetak,&kraj,x);
+    stampajdesno(pocetak);	
     return 0;
 }
