@@ -154,16 +154,14 @@ Delement *obrisiIndex(Delement *glava, Delement **kraj, int x){
 		free(lista);
 		return glava;
 	}
-	lista=lista->desni;
-	x--;
-	while(x!=0){
+	do{
 		if(lista->desni==NULL){
 			printf("Pogresan unos, X ne moze biti veci od velicine liste, nijedan element nije izbrisan");
 			return glava;
 		}
 		x--;
 		lista=lista->desni;	
-	}
+	}while(x>0);
 	if(lista==(*kraj)){
 		(*kraj)=(*kraj)->levi;
 		(*kraj)->desni=NULL;
@@ -173,6 +171,42 @@ Delement *obrisiIndex(Delement *glava, Delement **kraj, int x){
 	lista->levi->desni=lista->desni;
 	lista->desni->levi=lista->levi;
 	free(lista);
+	return glava;
+}
+
+Delement *dodajIndex(Delement *glava, Delement **kraj, int x, int podatak){
+	Delement *novi=(Delement*)malloc(sizeof(Delement));
+	if(novi==NULL){
+		printf("Greska pri alociranju dinamicke memorije.");
+		exit(1);
+	}
+	novi->podatak=podatak;
+	x--;
+	if(x<=0){
+		novi->levi=NULL;
+		novi->desni=glava;
+		return novi;
+	}
+	Delement* lista=glava;
+	do{
+		if(lista->desni==NULL){
+			printf("Index ne moze biti veci od velicine liste.");
+			return glava;
+		}
+		lista=lista->sledeci;
+		x--;
+	}while(x>0);
+	if(lista==(*kraj)){
+		(*kraj)->desni=novi;
+		novi->levi=(*kraj);
+		(*kraj)=novi;
+		novi->desni=NULL;
+		return glava;
+	}
+	novi->desni=lista->desni;
+	novi->levi=lista;
+	lista->desni=novi;
+	novi->desni->levi=novi;
 	return glava;
 }
 
