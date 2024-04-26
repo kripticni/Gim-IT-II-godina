@@ -193,7 +193,7 @@ Delement *dodajIndex(Delement *glava, Delement **kraj, int x, int podatak){
 			printf("Index ne moze biti veci od velicine liste.");
 			return glava;
 		}
-		lista=lista->sledeci;
+		lista=lista->desni;
 		x--;
 	}while(x>0);
 	if(lista==(*kraj)){
