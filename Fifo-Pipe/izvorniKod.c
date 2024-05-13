@@ -7,41 +7,34 @@ typedef struct element{
 }Element;
 
 void insert(Element **pocetak, Element **kraj, int x){
-	Element *novi=(Element*)malloc(sizeof(Element));
+	Element* novi=(Element*)malloc(sizeof(Element));
 	if(novi==NULL){
-		printf("Greska pri alokaciji.");
+		printf("Greska pri alokaciji");
 		exit(1);
 	}
 	novi->podatak=x;
+	novi->sledeci=NULL;
 	if((*pocetak)==NULL){
 		(*pocetak)=novi;
 		(*kraj)=novi;
 		return;
 	}
-	novi->sledeci=(*pocetak);
-	(*pocetak)=novi;
+	(*kraj)->sledeci=novi;
+	(*kraj)=novi;
 }	
 
+
 void delete(Element **pocetak, Element **kraj, int *x){
-	if((*kraj)==NULL){
-		printf("Red je prazan");
-		return;
-	}
-	*x=(*kraj)->podatak;
-	Element* fifo=(*pocetak);
-	if((*pocetak)==(*kraj)){
-		free(fifo);
-		(*pocetak)=NULL;
-		(*kraj)=NULL;
-		return;
-	}
-	while(fifo->sledeci!=(*kraj)){
-		fifo=fifo->sledeci;
-	}
-	(*kraj)=fifo;
-	fifo=fifo->sledeci;
-	(*kraj)->sledeci=NULL;
-	free(fifo);
+	Element* novi=(*pocetak);
+	if((*pocetak)==NULL){
+		printf("Fifo je prazan.");
+		exit(1);
+	}	
+	*x=(*pocetak)->podatak;
+	(*pocetak)=(*pocetak)->sledeci;
+	if((*kraj)==novi) (*kraj)=(*kraj)->sledeci;
+	free(novi);
+
 }
 
 void stampaj(Element *pocetak){
@@ -64,7 +57,7 @@ int main(){
 	}
 	stampaj(pocetak);
 	printf("\nIspisivanje...\n");
-	for(i=0;i<5;i++){
+	for(i=0;i<6;i++){
 		delete(&pocetak, &kraj, &x);
 		printf("%i", x);
 	}
