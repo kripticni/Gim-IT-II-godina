@@ -34,17 +34,36 @@ void delete(Element **pocetak, Element **kraj, int *x){
 	(*pocetak)=(*pocetak)->sledeci;
 	if((*kraj)==novi) (*kraj)=(*kraj)->sledeci;
 	free(novi);
-
 }
 
-void stampaj(Element *pocetak){
-	while(pocetak!=NULL){
-		printf("%i\t", pocetak->podatak);	
-		pocetak=pocetak->sledeci;
+void stampaj(Element *lista){
+	while(lista!=NULL){
+		printf("%i\t", lista->podatak);	
+		lista=lista->sledeci;
 	}
 }
 
-
+Element* napraviNovu(Element* lista){
+  Element* novi=(Element*)malloc(sizeof(Element));
+  novi->podatak=lista->podatak;
+  Element* pocetak=novi;
+  Element* kraj=novi; 
+  lista=lista->sledeci;
+  while(lista!=NULL){
+    novi=(Element*)malloc(sizeof(Element));
+    novi->podatak=lista->podatak;
+    if(lista->podatak>-1){
+      novi->sledeci=pocetak;
+      pocetak=novi;
+    }else{
+      kraj->sledeci=novi;
+      kraj=novi;
+    }
+    lista=lista->sledeci;
+  }
+  kraj->sledeci=NULL;
+  return pocetak;
+}
 
 int main(){
 	Element *pocetak=NULL;
@@ -57,9 +76,8 @@ int main(){
 	}
 	stampaj(pocetak);
 	printf("\nIspisivanje...\n");
-	for(i=0;i<6;i++){
-		delete(&pocetak, &kraj, &x);
-		printf("%i", x);
-	}
+  
+  Element *lista=napraviNovu(pocetak);
+  stampaj(lista);
 	return 0;
 }
