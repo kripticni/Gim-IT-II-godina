@@ -53,12 +53,40 @@ void stampajAps(Cvor* koren){
     stampajAps(koren->desni);
   }
 }
+
+int suma(Cvor* stablo){
+  if(stablo==NULL)return 0;
+  return stablo->podatak + suma(stablo->levi) + suma(stablo->desni);
+}
+
+int velicina(Cvor* stablo){
+  if(stablo==NULL)return 0;
+  return 1 + velicina(stablo->levi) + velicina(stablo->desni);
+}
+
+int proizvod(Cvor* stablo){
+  if(stablo==NULL)return 1;
+  return stablo->podatak * proizvod(stablo->levi) * proizvod(stablo->desni);
+}
+
+int proizvod_manjih(Cvor* stablo){
+  if(stablo==NULL || stablo->podatak>10) return 1;
+  return stablo->podatak * proizvod_manjih(stablo->levi) * proizvod_manjih(stablo->desni);
+}
+
 int main(){
   Cvor* stablo=NULL;
-  int i;
-  for(i=0;i<100;i++){
-    stablo=dodaje(stablo, i);
+  int i, x, n;
+  printf("Unesi broj cvorova: ");
+  scanf("%i", &n);
+  for(i=0;i<n;i++){
+    printf("Unesi x: ");
+    scanf("%i", &x);
+    stablo=dodaje(stablo, x);
   }
   stampajInOrder(stablo);
+  printf("\n");
+  stampajAps(stablo);
+  printf("\nVelicina stabla je %i, proizvod cvorova je %i, suma cvorova je %i, proizvod manjih od 10 je %i", velicina(stablo), proizvod(stablo), suma(stablo), proizvod_manjih(stablo));
   return 0;
 }
