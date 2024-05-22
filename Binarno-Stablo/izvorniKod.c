@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct cvor{
   int podatak;
@@ -74,6 +75,21 @@ int proizvod_manjih(Cvor* stablo){
   return stablo->podatak * proizvod_manjih(stablo->levi) * proizvod_manjih(stablo->desni);
 }
 
+void listovi(Cvor* stablo){
+  if(stablo->levi!=NULL){
+    listovi(stablo->levi);
+    if(stablo->desni!=NULL){
+      listovi(stablo->desni);
+    }
+    return;
+  }
+  if(stablo->desni!=NULL){
+    listovi(stablo->desni);
+    return;
+  }
+  printf("%i\t", stablo->podatak);
+}
+
 int main(){
   Cvor* stablo=NULL;
   int i, x, n;
@@ -87,6 +103,7 @@ int main(){
   stampajInOrder(stablo);
   printf("\n");
   stampajAps(stablo);
-  printf("\nVelicina stabla je %i, proizvod cvorova je %i, suma cvorova je %i, proizvod manjih od 10 je %i", velicina(stablo), proizvod(stablo), suma(stablo), proizvod_manjih(stablo));
+  printf("\nVelicina stabla je %i, proizvod cvorova je %i, suma cvorova je %i, proizvod manjih od 10 je %i\nListovi su:\n", velicina(stablo), proizvod(stablo), suma(stablo), proizvod_manjih(stablo));
+  listovi(stablo);
   return 0;
 }
