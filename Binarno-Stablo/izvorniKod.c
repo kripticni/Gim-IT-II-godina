@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 typedef struct cvor{
   int podatak;
@@ -41,7 +40,7 @@ Cvor* dodaje(Cvor *koren, int x){
 void stampajInOrder(Cvor* koren){
  if(koren!=NULL){
     stampajInOrder(koren->levi);
-    printf("%i", koren->podatak);
+    printf("%i\t", koren->podatak);
     stampajInOrder(koren->desni);
   }
 }
@@ -50,7 +49,7 @@ void stampajAps(Cvor* koren){
  if(koren!=NULL){
     if(koren->podatak<0)koren->podatak=-(koren->podatak);
     stampajAps(koren->levi);
-    printf("%i", koren->podatak);
+    printf("%i\t", koren->podatak);
     stampajAps(koren->desni);
   }
 }
@@ -71,23 +70,9 @@ int proizvod(Cvor* stablo){
 }
 
 int proizvod_manjih(Cvor* stablo){
-  if(stablo==NULL || stablo->podatak>10) return 1;
-  return stablo->podatak * proizvod_manjih(stablo->levi) * proizvod_manjih(stablo->desni);
-}
-
-void listovi(Cvor* stablo){
-  if(stablo->levi!=NULL){
-    listovi(stablo->levi);
-    if(stablo->desni!=NULL){
-      listovi(stablo->desni);
-    }
-    return;
-  }
-  if(stablo->desni!=NULL){
-    listovi(stablo->desni);
-    return;
-  }
-  printf("%i\t", stablo->podatak);
+  if(stablo==NULL)return 1;
+  if(stablo->podatak<10)return stablo->podatak*proizvod_manjih(stablo->desni)*proizvod_manjih(stablo->levi);
+  return proizvod_manjih(stablo->levi)*proizvod_manjih(stablo->desni);
 }
 
 int main(){
@@ -103,7 +88,6 @@ int main(){
   stampajInOrder(stablo);
   printf("\n");
   stampajAps(stablo);
-  printf("\nVelicina stabla je %i, proizvod cvorova je %i, suma cvorova je %i, proizvod manjih od 10 je %i\nListovi su:\n", velicina(stablo), proizvod(stablo), suma(stablo), proizvod_manjih(stablo));
-  listovi(stablo);
+  printf("\nVelicina stabla je %i, proizvod cvorova je %i, suma cvorova je %i, proizvod manjih od 10 je %i\n", velicina(stablo), proizvod(stablo), suma(stablo), proizvod_manjih(stablo));
   return 0;
 }
