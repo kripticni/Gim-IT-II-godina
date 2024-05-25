@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct cvor{
   int podatak;
@@ -105,7 +106,7 @@ Cvor* nadjiR(Cvor* stablo, int x){
 Cvor* nadji(Cvor* koren, int x){
     while(koren!=NULL && koren->podatak!=x){
         if(x<koren->podatak)koren=koren->levi;
-            else koren=koren->desni;
+        else koren=koren->desni;
     }
     return koren;
 }
@@ -115,29 +116,47 @@ Cvor* maksCvorR(Cvor* stablo){
     return maksCvorR(stablo->desni);
 }
 
+Cvor* inicializator(int* niz,int n){
+  Cvor* novi=(Cvor*)malloc(sizeof(Cvor));
+  novi->podatak=*(niz);
+  novi->levi=NULL;
+  novi->desni=NULL;
+  Cvor* koren=novi;
+  for(int i=1;i<n;i++){
+    Cvor* novi=(Cvor*)malloc(sizeof(Cvor));
+    novi->podatak=*(niz+i);
+    novi->levi=NULL;
+    novi->desni=NULL;
+    Cvor* stablo=koren;
+    while(1){
+      if(novi->podatak < stablo->podatak){
+        if(stablo->levi!=NULL){
+          stablo=stablo->levi;
+        }else{
+          stablo->levi=novi;
+          break;
+        }
+      }else{
+        if(stablo->desni!=NULL){
+          stablo=stablo->desni;
+        }else{
+          stablo->desni=novi;
+          break;
+        }
+      }
+    }
+  }
+  return koren;
+}
+
+
 int main(){
   Cvor* stablo=NULL;
   int i, x, n, temp, e;
-  printf("Unesi temp");
-  scanf("%i",&temp);
-  printf("Unesi broj cvorova: ");
-  scanf("%i", &n);
-  for(i=0;i<n;i++){
-    printf("Unesi x: ");
-    scanf("%i", &x);
-    stablo=dodaje(stablo, x);
-  }
+  int niz[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+  stablo=inicializator(&niz[0],sizeof(niz)/sizeof(niz[0]));
   stampajInOrder(stablo);
   printf("\n");
-  stampajAps(stablo);
-  printf("\nUnesite E: ");
-  scanf("%i", &e);
-  printf("\nVelicina stabla je %i, proizvod cvorova je %i, suma cvorova je %i, proizvod manjih od 10 je %i\nBroj vecih od E je %i", velicina(stablo), proizvod(stablo), suma(stablo), proizvod_manjih(stablo), brojE(stablo, e));
-  //listovi(stablo);
-  Cvor* stablo2=nadji(stablo,e);
-  if(stablo2!=NULL){
-        printf("\nPostoji E.");
-  }else printf("\nNepostoji E.");
-
+  listovi(stablo);
   return 0;
 }
