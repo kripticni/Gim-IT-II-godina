@@ -38,12 +38,57 @@ Cvor* dodaje(Cvor *koren, int x){
   }
 }
 
+Cvor* dodajeRekurzivno(Cvor* koren, int x){
+  if(koren==NULL){
+    Cvor* novi=(Cvor*)malloc(sizeof(Cvor));
+    novi->podatak=x;
+    novi->levi=NULL;
+    novi->desni=NULL;
+    return novi;
+  }
+  if(x<koren->podatak){
+    Cvor* novi=dodajeRekurzivno(koren->levi,x);
+    if(novi != NULL){
+      koren->levi=novi; 
+    }
+    return NULL;
+  }else{
+    Cvor* novi=dodajeRekurzivno(koren->desni,x);
+    if(novi!=NULL){
+      koren->desni=novi;
+    }
+    return NULL;
+  }
+}
+
+Cvor* dodajeR(Cvor* koren, int x){
+  if(koren==NULL)return dodajeRekurzivno(koren,x);
+  dodajeRekurzivno(koren,x);
+  return koren;
+}
+
 void stampajInOrder(Cvor* koren){
  if(koren!=NULL){
     stampajInOrder(koren->levi);
     printf("%i\t", koren->podatak);
     stampajInOrder(koren->desni);
-  }
+ }
+}
+
+void stampajPostOrder(Cvor* koren){
+ if(koren!=NULL){
+    stampajPostOrder(koren->levi);
+    stampajPostOrder(koren->desni);
+    printf("%i\t", koren->podatak);
+ }
+}
+
+void stampajPreOrder(Cvor* koren){
+ if(koren!=NULL){
+    printf("%i\t", koren->podatak);
+    stampajPreOrder(koren->levi);
+    stampajPreOrder(koren->desni);
+ }
 }
 
 void stampajAps(Cvor* koren){
@@ -57,7 +102,7 @@ void stampajAps(Cvor* koren){
 
 int suma(Cvor* stablo){
   if(stablo==NULL)return 0;
-  return stablo->podatak + suma(stablo->levi) + suma(stablo->desni);
+  return suma(stablo->levi) + stablo->podatak + suma(stablo->desni);
 }
 
 int velicina(Cvor* stablo){
@@ -116,6 +161,11 @@ Cvor* maksCvorR(Cvor* stablo){
     return maksCvorR(stablo->desni);
 }
 
+Cvor* minCvorR(Cvor* stablo){
+  if(stablo->desni==NULL)return stablo;
+  return minCvorR(stablo->desni);
+}
+
 Cvor* inicializator(int* niz,int n){
   Cvor* novi=(Cvor*)malloc(sizeof(Cvor));
   novi->podatak=*(niz);
@@ -153,8 +203,9 @@ Cvor* inicializator(int* niz,int n){
 int main(){
   Cvor* stablo=NULL;
   int i, x, n, temp, e;
-  int niz[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-  stablo=inicializator(&niz[0],sizeof(niz)/sizeof(niz[0]));
+  for(i=0;i<30;i++){
+    stablo=dodajeR(stablo,i);
+  }
   stampajInOrder(stablo);
   printf("\n");
   listovi(stablo);
