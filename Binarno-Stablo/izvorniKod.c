@@ -161,12 +161,26 @@ Cvor* maksCvorR(Cvor* stablo){
     return maksCvorR(stablo->desni);
 }
 
+Cvor* maksCvor(Cvor* stablo){
+  while(stablo->desni!=NULL){
+    stablo=stablo->desni;
+  }
+  return stablo;
+}
+
 Cvor* minCvorR(Cvor* stablo){
   if(stablo->desni==NULL)return stablo;
   return minCvorR(stablo->desni);
 }
 
-Cvor* inicializator(int* niz,int n){
+Cvor* minCvor(Cvor* stablo){
+  while(stablo->levi!=NULL){
+    stablo=stablo->levi;
+  }
+  return stablo;
+}
+
+Cvor* inic(int* niz, int n){
   Cvor* novi=(Cvor*)malloc(sizeof(Cvor));
   novi->podatak=*(niz);
   novi->levi=NULL;
@@ -202,12 +216,20 @@ Cvor* inicializator(int* niz,int n){
 
 int main(){
   Cvor* stablo=NULL;
-  int i, x, n, temp, e;
-  for(i=0;i<30;i++){
-    stablo=dodajeR(stablo,i);
-  }
+  int i, x, temp, e;
+  int niz[]={50,30,20,40,70,60,80};
+  int n=sizeof(niz)/sizeof(*(niz));
+  stablo=inic(niz, n);
   stampajInOrder(stablo);
   printf("\n");
   listovi(stablo);
+
+  Cvor* trazi=nadji(stablo,40);
+  if(trazi==NULL)printf("\n40 nije pronadjen.\n");
+  else printf("\n40 je pronadjen.\n");
+
+  trazi=nadjiR(stablo,15);
+  if(trazi==NULL)printf("15 nije pronadjen.\n");
+  else printf("15 je pronadjen.\n");
   return 0;
 }
