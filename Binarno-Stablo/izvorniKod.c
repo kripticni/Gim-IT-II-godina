@@ -213,6 +213,24 @@ Cvor* inic(int* niz, int n){
   return koren;
 }
 
+int suma_listova(Cvor* koren){
+  if(koren->levi!=NULL){
+    if(koren->desni!=NULL){
+      return suma_listova(koren->desni)+suma_listova(koren->levi);
+    }
+    return suma_listova(koren->levi);
+  }
+  if(koren->desni!=NULL)return suma_listova(koren->desni);
+  return koren->podatak;
+}
+
+void zamena(Cvor* koren){
+  Cvor* pom=koren->levi;
+  koren->levi=koren->desni;
+  koren->desni=pom;
+  if(koren->levi!=NULL)zamena(koren->levi);
+  if(koren->desni!=NULL)zamena(koren->desni);
+}
 
 int main(){
   Cvor* stablo=NULL;
