@@ -42,7 +42,7 @@ void stampaj(Delement* pocetak){
   }
 }
 
-Cvor* inic(int arr[], int n){
+Cvor* inic(int arr[], int n){ //ovo je inic funkcija ali za deljivi sa 2 samo
   Cvor* koren=(Cvor*)malloc(sizeof(Cvor));
   int i=0;
   while(arr[i]%2==1)i++;

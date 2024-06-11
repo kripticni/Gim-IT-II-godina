@@ -65,7 +65,7 @@ Cvor* dodajeR(Cvor* koren, int x){
   if(koren==NULL)return dodajeRekurzivno(koren,x);
   dodajeRekurzivno(koren,x);
   return koren;
-}
+}//NIJE POTREBNO OVO
 
 void stampajInOrder(Cvor* koren){
  if(koren!=NULL){
@@ -142,6 +142,15 @@ void listovi(Cvor* stablo){
     printf("%i\t", stablo->podatak);
 }
 
+void listoviBiljana(Cvor* stablo){
+  if(stablo->desni==NULL && stablo->levi==NULL){
+    printf("%i\t", stablo->podatak);
+    return;
+  }
+  if(stablo->desni!=NULL)listoviBiljana(stablo->desni);
+  if(stablo->levi!=NULL)listoviBiljana(stablo->levi);
+}
+
 Cvor* nadjiR(Cvor* stablo, int x){
     if(stablo==NULL||stablo->podatak==x)return stablo;
     if(stablo->podatak>x)return nadjiR(stablo->levi, x);
@@ -182,30 +191,30 @@ Cvor* minCvor(Cvor* stablo){
 
 Cvor* inic(int* niz, int n){
   Cvor* novi=(Cvor*)malloc(sizeof(Cvor));
-  novi->podatak=*(niz);
+  novi->podatak=*(niz); //ovde je iskoriscen niz[0] 
   novi->levi=NULL;
   novi->desni=NULL;
-  Cvor* koren=novi;
-  for(int i=1;i<n;i++){
-    Cvor* novi=(Cvor*)malloc(sizeof(Cvor));
+  Cvor* koren=novi; //ovaj novi ->
+  for(int i=1;i<n;i++){ //zato se krece sa i=1
+    Cvor* novi=(Cvor*)malloc(sizeof(Cvor)); //nije isti kao ovaj novi
     novi->podatak=*(niz+i);
     novi->levi=NULL;
     novi->desni=NULL;
     Cvor* stablo=koren;
-    while(1){
+    while(1){ //beskonacni ciklus
       if(novi->podatak < stablo->podatak){
         if(stablo->levi!=NULL){
           stablo=stablo->levi;
         }else{
           stablo->levi=novi;
-          break;
+          break; //ovo je izlaz iz ciklus
         }
       }else{
         if(stablo->desni!=NULL){
           stablo=stablo->desni;
         }else{
           stablo->desni=novi;
-          break;
+          break; //ovo je izlaz drugi iz ciklus
         }
       }
     }

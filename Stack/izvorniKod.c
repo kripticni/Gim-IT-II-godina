@@ -14,12 +14,15 @@ void stampaj(Element *vrh){
 }
 
 Element* push(Element* vrh,int x){
-    Element *novi;
-    novi=(Element*)malloc(sizeof(Element));
-    novi->podatak=x;
-    novi->sledeci=vrh;
-    vrh=novi;
-    return vrh;
+  Element *novi=(Element*)malloc(sizeof(Element));
+  if(novi==NULL){
+    printf("Greska.");
+    exit(1);
+  }
+  novi->podatak=x;
+  novi->sledeci=vrh;
+  vrh=novi;
+  return vrh;
 }
 
 
@@ -30,14 +33,13 @@ void pop(Element **vrh,int *x){
     free(novi);
 }
 
-
-Element *popPovratni(Element *vrh, int *x){
+Element* popPovratni(Element* vrh, int *x){
     Element* novi=vrh;
     *x=vrh->podatak;
     vrh=vrh->sledeci;
     free(novi);
     return vrh;
-}
+  }
 
 int max(Element *vrh){
     int max=vrh->podatak;

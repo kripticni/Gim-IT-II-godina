@@ -1,0 +1,20 @@
+Strukture koje trebate znati:
+-Stack
+-Fifo
+-Dvostruka lista
+-Binarno stablo
+
+typedef struct delement{
+    int podatak;
+    struct delement *levi,*desni;
+}Delement;
+
+typedef struct element{
+	int podatak;
+	struct element *sledeci;
+}Element;
+
+Sve ostalo imate u folderi, medjutim vecina funkcije (skoro sve) su moje
+implementacije a ne one od profesorku tako da ako preferirate vise takve 
+(koje su inace losije od moje), trazite svesku na nekog drugog.
+

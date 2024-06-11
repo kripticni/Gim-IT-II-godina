@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct delement
-{
+
+typedef struct delement{
     int podatak;
     struct delement *levi,*desni;
 }Delement;
 
-Delement *dodajNaKrajDvostruke(Delement *glava, Delement **kraj, int n){
+Delement* dodajNaKrajDvostruke(Delement *glava, Delement **kraj, int n){ //isto kao insert za fifo/pipe
 	Delement *novi=(Delement*)malloc(sizeof(Delement));
 	if(novi==NULL){
 		printf("Greska.");
@@ -15,17 +15,17 @@ Delement *dodajNaKrajDvostruke(Delement *glava, Delement **kraj, int n){
 	novi->podatak=n;
 	novi->desni=NULL;
 	if(glava==NULL){
-		novi->levi=NULL;
+		novi->levi=NULL; //posto je glava prazna, novi ne moze da pokazuje na prosli
 		(*kraj)=novi;
 		return novi;
 	}
-	novi->levi=*kraj;
+	novi->levi=(*kraj);
 	(*kraj)->desni=novi;
 	(*kraj)=novi;
 	return glava;
 }
 
-Delement *dodajNaPocetakDvostruke(Delement *glava, int n){
+Delement *dodajNaPocetakDvostruke(Delement *glava, int n){ //isto kao push za stack
 	Delement *novi=(Delement*)malloc(sizeof(Delement));
 	if(novi==NULL){
 		printf("Greska.");
@@ -39,7 +39,7 @@ Delement *dodajNaPocetakDvostruke(Delement *glava, int n){
 	}
 	novi->desni=glava;
 	glava->levi=novi;
-	return novi;
+	return novi; //jer u glavni program, glava= sta god ovo vrati, tako da nije bitno dal vracas novi ili glavu iz funckiju jer su isti
 }
 
 
@@ -79,12 +79,12 @@ void stampajdesno(Delement *p)
         p=p->desni;}
 
 }
-void stampajdlevo(Delement *p)
+void stampajlevo(Delement *q)
 {
-    while(p!=NULL)
+    while(q!=NULL)
     {
-        printf("%i\t",p->podatak);
-        p=p->levi;}
+        printf("%i\t",q->podatak);
+        q=q->levi;}
 
 }
 int brelm(Delement *p)
@@ -98,7 +98,7 @@ int brelm(Delement *p)
     return b;
 }
 
-void SortirajD(Delement *pocetak)
+void SortirajD(Delement *pocetak)//od biljanu
 {
     Delement *pi,*pj;
     int i,j,n,pom;
@@ -122,28 +122,51 @@ void SortirajD(Delement *pocetak)
 }
 
 //i=0;i<n-1;i++
-//j=0;j<n-i-1;j++
+//j=i;j<n;j++
 //if a[j] < a[min] then min = j
 //swap i, min
+
+void nizSSort(int arr[], int n){ //kao primer za selection sort
+  int min=arr[0];
+  for(int i=0;i<n;i++){
+    for(int j=i;j<n;j++){
+      if(arr[j]<arr[min]){
+        min=j;
+      }
+    }
+    int pom=arr[min];
+    arr[min]=arr[i];
+    arr[i]=pom;
+  }
+  return;
+}
+
 Delement* SelectionSort(Delement *glava){
-    Delement *i=glava;
+    Delement *i=glava;//i=0
     Delement *j;
     Delement *min;
     int pom;
-    while(i!=NULL){
+    while(i!=NULL){ //i<n
         min=i;
         j=i->desni;
-        while(j!=NULL){
-            if(j->podatak < min->podatak)min=j; // < za rastuci, > za opadajuci
-            j=j->desni;
+        while(j!=NULL){ //j<n
+            if(j->podatak < min->podatak)min=j; // < za rastuci, > za opadajuci, ovo je za min supstituciju
+            j=j->desni;//j++
         }
         pom=min->podatak;
         min->podatak=i->podatak;
         i->podatak=pom;
-        i=i->desni;
+        i=i->desni; //i++
     }
     return glava;
 }
+//ne moze sa bubble sort jer on zahteva
+//i=0;i<n-1;i++
+//j=1;j<n-i-1;j++
+
+//problem je sto treba da znas razmak od n-i 
+//ako oces n-i, moras da krenes sa kraj, i da ides u levo od kraj isto tolko kolko ides od i u desno
+
 
 Delement *obrisiIndex(Delement *glava, Delement **kraj, int x){
 	Delement* lista=glava;
