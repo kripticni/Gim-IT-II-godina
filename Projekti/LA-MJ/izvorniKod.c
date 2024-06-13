@@ -87,20 +87,26 @@ void genStablo(Stablo** koren, char *str, int n){
 }
 
 void readStablo(List** lista, Stablo* stablo){
-  int pozicija;
+  int pozicija=0;
   char str[128];
   (*lista)=(List*)calloc(1, sizeof(List));
   Stack* stack=make(stablo->desni);
+start:
   while(1){
-    for(pozicija=0;(pozicija%7)<6;++pozicija){//moguca greska u uslovu
+    for(;(pozicija%7)<6;++pozicija){//moguca greska u uslovu
       if(stablo->levi!=NULL){
         if(stablo->desni!=NULL)stack=push(stack, stablo->desni, str, pozicija);
         str[pozicija / 7] &= ~(1 << (6 - (pozicija % 7)));
         stablo=stablo->levi;
       }else{
         str[pozicija / 7] |= (1 << (6 - (pozicija % 7)));
-        stablo=stablo->desni; //ako je levo NULL onda sigurno desno nije jer imamo barem po 7 bitova
+        if(stablo->desni!=NULL)stablo=stablo->desni; //ako je levo NULL onda sigurno desno nije jer imamo barem po 7 bitova
       }
+    }
+    if(stablo==NULL){ 
+      if(stack!=NULL)pop(&stack, &stablo, str, &pozicija); //dok ima u stacku uzimamo sa stacka
+      else return;
+      goto start;
     }
     if(stablo->podaci.ponavljanja){
       List* novi=(List*)malloc(sizeof(List));
@@ -188,7 +194,7 @@ int main(){
   odluka[strcspn(odluka,"\n")]='\0';
 
   char ch;
-  char* input=NULL;
+  char* input=malloc(65);
   int maxlen=64;
   int len=0;
 
@@ -196,7 +202,7 @@ int main(){
     while((ch = getchar()) != EOF){
         if(len >= maxlen){
             maxlen += 8; 
-            char* temp=realloc(input, maxlen);
+            char* temp=realloc(input, maxlen+1);
             if(temp==NULL){
                 fprintf(stderr, "Greska pri alokaciji!\n");
                 free(input);
@@ -204,26 +210,38 @@ int main(){
             }
             input=temp;
         }
-        input[len++]=(char)ch;
+        input[len]=(char)ch;
     }
   }else{
     dat=fopen(odluka, "r");
     if(!dat){
       fprintf(stderr, "Greska pri otvaranju %s\n", odluka);
-      exit(1);
+      free(input);
+      return 1;
     }
-    while(fscanf(dat, "%c", &input[len])==1){ //ucitavanje iz datoteke dok ima karaktera
-      len++;
+    while((ch=fgetc(dat)) != EOF){  // Use fgetc to read characters
+      if (len>=maxlen) {
+        maxlen += 8; 
+        char* temp=realloc(input, maxlen + 1);  // +1 for the null terminator
+        if(temp==NULL){
+          fprintf(stderr, "Greska pri alokaciji!\n");
+          free(input);
+          fclose(dat);
+          return 1;
+        }
+        input=temp;
+      }
+      input[len++]=(char)ch;
     }
     fclose(dat);
   }
-  input[len]='\0';
-
+  input[len]='\0';  // Null-terminate the string
   Stablo* koren=NULL;
   List* lista=NULL;
   int listlen=0;
 
   genStablo(&koren, &input[0], len);
+  readStablo(&lista, koren);
   SelectionSortAndSize(lista, &listlen);
 
   printf("Unikatne reci: %i\nREC:FREKVENCIJA\n", listlen);
