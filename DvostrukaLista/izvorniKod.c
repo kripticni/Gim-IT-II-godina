@@ -165,7 +165,6 @@ Delement* SelectionSort(Delement *glava){
 //j=1;j<n-i-1;j++
 
 //problem je sto treba da znas razmak od n-i 
-//ako oces n-i, moras da krenes sa kraj, i da ides u levo od kraj isto tolko kolko ides od i u desno
 
 
 Delement *obrisiIndex(Delement *glava, Delement **kraj, int x){

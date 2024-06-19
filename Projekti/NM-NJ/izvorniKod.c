@@ -128,8 +128,9 @@ void promenaKrugova(F1 niz[], int n)
 {
     char staza[31];
     int i, izbor, vrednost;
-    printf("\nUnesite ime staze: ");
+    printf("Unesite enter da bi ste nastavili.");
     while (getchar()!='\n');
+    printf("\nUnesite ime staze: ");
     fgets(staza, 30, stdin);
     staza[strcspn(staza, "\n")]='\0';
     int nalaziSe=0;
@@ -157,10 +158,13 @@ void promenaKrugova(F1 niz[], int n)
 
 int main()
 {
-    int i=1, n=3, x, provera=1;
+    int n=0, x, provera=1;
     F1 k[30];
-    for (i=0;i<n && provera;i++)
-        provera=citaj(&k[i], i);
+    while(provera){ 
+        provera=citaj(&k[n], n);
+        n++;
+    }
+    n--;
     FILE *dat=fopen("f1.txt", "w+");
     pisi(k,n);
     printf("\n");
@@ -190,7 +194,7 @@ int main()
             break;
         }
     }
-    for (i=0;i<n;i++)
+    for (int i=0;i<n;i++)
         fprintf(dat, "%s %i %i %i\n", k[i].ime, k[i].krugovi, k[i].starost, k[i].duzina);
     promenaKrugova(k,n);
     sortStarost(k,n);

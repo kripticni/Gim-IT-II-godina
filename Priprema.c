@@ -36,6 +36,7 @@ void upisi(Delement* pocetak, int arr[]){
     pocetak=pocetak->desni;
   }
 }
+
 void stampaj(Delement* pocetak){
   for(;pocetak!=NULL;pocetak=pocetak->desni){
     printf("%i\t", pocetak->podatak);
