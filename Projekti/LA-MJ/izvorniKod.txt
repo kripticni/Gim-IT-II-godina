@@ -37,7 +37,6 @@ typedef struct tail{
   struct head* nine;
 }Tail;
 
-
 typedef struct pipe{
   uint8_t podatak;
   struct pipe* sledeci;
