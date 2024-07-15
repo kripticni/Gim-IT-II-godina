@@ -10,7 +10,7 @@ void zamena(int* i,int* j){
 
 void SelectionSort(int arr[],int n){
   for(register int i = 0; i < n; i++){
-    for(register int j = i + 1; j < (n - 1); j++){
+    for(register int j = i + 1; j < n; j++){
       if(arr[i]<arr[j]){
         zamena(&arr[i], &arr[j]);
       }
@@ -63,6 +63,7 @@ void Merge (int arr[], int donja1, int gornja1, int donja2, int gornja2){
 }
 
 void MergeSort(int arr[], int donja, int gornja){
+  void Merge (int arr[], int donja1, int gornja1, int donja2, int gornja2);
   if (gornja > donja){
     int sredina = (donja + gornja) / 2; 
     MergeSort(arr, donja, sredina); 
@@ -85,10 +86,45 @@ int Partition(int arr[], int donja, int gornja){
 }
 
 void QuickSort(int arr[], int donja, int gornja){
+  int Partition(int arr[], int donja, int gornja);
   if (gornja > donja){
     int pivot = Partition(arr, donja, gornja);
     QuickSort(arr, donja, pivot - 1);
     QuickSort(arr, pivot + 1, gornja);
+  }
+}
+
+int DualPartition(int arr[], int donja, int gornja, int* right){
+  if(arr[donja] > arr[gornja])
+    zamena(&arr[donja], &arr[gornja]);
+
+  int l=donja+1, r=gornja-1, i=donja+1;
+
+  while(i<=r){
+    if(arr[i] < arr[donja]){
+      zamena(&arr[i], &arr[l]);
+      l++;
+    }else if(arr[i] > arr[gornja]){
+      zamena(&arr[i], &arr[r]);
+      r--;
+      i--;
+    }
+    i++;
+  }
+
+  zamena(&arr[donja], &arr[--l]);
+  zamena(&arr[gornja], &arr[++r]);
+  *right=r;
+  return l;
+}
+
+void DualPivotSort(int arr[], int donja, int gornja){
+  if (gornja > donja){
+    int right;
+    int left=DualPartition(arr, donja, gornja, &right);
+    DualPivotSort(arr, donja, left-1);
+    DualPivotSort(arr, left+1, right-1);
+    DualPivotSort(arr, right+1, gornja);
   }
 }
 
@@ -100,18 +136,21 @@ int main(){
 
   int arr[n];
   {  
-  for(auto int i=0;i<n;i++){
-      printf("Unesite niz[%i]", i);
+  auto int i=0;
+  for(;i<n;i++){
+      printf("Unesite niz[%i]: ", i);
       scanf("%i",&arr[i]);
   }
+  printf("\nArray: ");
+  for(--i;i!=-1;--i)printf("%i\t", arr[i]);
   }
 
-  printf("Izaberite metodu za sortiranje, \n1. Selection\t2.Bubble\n3.Merge\t4.Quick\nUnos: ");
+  printf("\nIzaberite metodu za sortiranje, \n1. Selection\t2. Bubble\n3. Merge\t4. Quick\n5. Dual Pivot Quicksort\nUnos: ");
   uint8_t odluka;
 neuspesno:
-  scanf("%c", &odluka);
-  if(odluka>4 || odluka==0){
-    printf("Unesite broj od 1 od 4.");
+  scanf("%hhu", &odluka);
+  if(odluka>5 || odluka==0){
+    printf("Unesite broj od 1 od 5.");
     goto neuspesno;
   }
 
@@ -123,15 +162,18 @@ neuspesno:
       BubbleSort(arr, n);
       break;
     case 3:
-      MergeSort(arr, 0, n);
+      MergeSort(arr, 0, n-1);
       break;
     case 4:
-      QuickSort(arr, 0, n);
+      QuickSort(arr, 0, n-1);
+      break;
+    case 5:
+      DualPivotSort(arr, 0, n-1);
       break;
   }
 
   printf("\n");
-  for(;n>0;n--){
+  for(n--;n!=-1;n--){
     printf("%i", arr[n]);
   }
   return 0;
