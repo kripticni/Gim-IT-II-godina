@@ -29,6 +29,20 @@ void BubbleSort(int arr[],int n){
   }
 }
 
+void insertionSort(int arr[],register int left,register int right){ 
+  //mislim da je dobra ideja da pokusam da se prvo uporedi sa min i max i median pa da se onda odluci odakle da se krene insert, slicno kao binarna pretraga
+  for(register int i=left+1;i<=right;i++){ 
+    register int temp=arr[i]; 
+    register int j=i-1;//deklaracija pre while ciklusa zbog kodni blok
+    while(j>=left && arr[j]>temp) { 
+      arr[j+1] = arr[j]; 
+      j--; 
+    } 
+    arr[j+1]=temp; 
+  } 
+} 
+
+
 void Merge(int arr[], int donja1, int gornja1, int donja2, int gornja2){
   register int p,q,i,j;
   int pom[gornja2-donja1];
@@ -293,6 +307,20 @@ void MultiSortUnwrapped(int arr[],int donja,int gornja,int pom[]){
   }
 }
 
+int run;
+void TimSort(int arr[],register int n){ 
+    for (int i=0;i<n;i+=run) 
+        insertionSort(arr,i,(i+run-1<n-1)?i+run-1:n-1); 
+    for(int size=run;size<n;size=2*size){ 
+        for(register int left=0;left<n;left+=2*size){ 
+            int mid=left+size-1; 
+            int right=(left+2*size-1<n-1)?left+2*size-1:n-1; 
+            if(mid<right) 
+                Merge(arr,left,mid,mid+1,right); 
+        } 
+    } 
+}  
+
 void MultiSort(int arr[], int n){
   if(n==0)
     return;
@@ -307,6 +335,16 @@ void MultiSort(int arr[], int n){
 
   for(i=0;i<n;i++)
     arr[i]=pom[i];
+}
+
+int getRunSize(register int n){
+  int retval=0;
+  while(n>=8){
+    retval |= n&1;
+    n>>=1;
+  }
+  //algoritam da izracuna najmanji runsize a da ostane kao stepen dvojke
+  return n+retval;
 }
 
 int main(){
@@ -326,12 +364,12 @@ int main(){
   for(--i;i!=-1;--i)printf("%i\t", arr[i]);
   }
 
-  printf("\nIzaberite metodu za sortiranje, \n1. Selection\t2. Bubble\n3. Merge\t4. Quick\n5. Merge (Memory Efficent)\n6. Dual Pivot Quicksort\n7. Ternary Mergesort\n8. Hybrid Mergesort\nUnos: ");
+  printf("\nIzaberite metodu za sortiranje, \n1. Selection\t2. Bubble\n3. Insertion\n4. Merge\t5. Quick\n6. Merge (Memory Efficent)\n7. Dual Pivot Quicksort\n8. Ternary Mergesort\n9. Hybrid Mergesort\n10. Tim's Merge\nUnos: ");
   uint8_t odluka;
 neuspesno:
   scanf("%hhu", &odluka);
-  if(odluka>8 || odluka==0){
-    printf("Unesite broj od 1 od 8.");
+  if(odluka>10 || odluka==0){
+    printf("Unesite broj od 1 od 10.");
     goto neuspesno;
   }
 
@@ -343,22 +381,31 @@ neuspesno:
       BubbleSort(arr, n);
       break;
     case 3:
-      MergeSort(arr, 0, n-1);
+      insertionSort(arr, 0, n);
       break;
     case 4:
-      QuickSort(arr, 0, n-1);
+      MergeSort(arr, 0, n-1);
       break;
     case 5:
-      MergeSortME(arr, n);
+      QuickSort(arr, 0, n-1);
       break;
     case 6:
-      DualPivotSort(arr, 0, n-1);
+      MergeSortME(arr, n);
       break;
     case 7:
-      TernarySort(arr, n);
+      DualPivotSort(arr, 0, n-1);
       break;
     case 8:
+      TernarySort(arr, n);
+      break;
+    case 9:
       MultiSort(arr, n);
+      break;
+    case 10:
+      ; //inace lsp daje declaration after label warning
+      extern int run;
+      run=getRunSize(n);
+      TimSort(arr, n);
       break;
   }
 
