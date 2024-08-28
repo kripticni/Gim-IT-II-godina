@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int main(){
-  int i = 0, k, n;
+  int i = 0, k=0, n;
 
   printf("Unesi N: ");
   scanf("%i", &n);
@@ -15,7 +15,6 @@ int main(){
   }
 
   i = 0;
-  k = 0;
 
   //for(;k<n;k++)
 

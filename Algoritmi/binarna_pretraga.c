@@ -21,7 +21,7 @@ int main(){
   scanf("%i", &x);
   
   while(l<=h){
-    m = l + (l+h)/2;
+    m = l + (h-l)/2;
     if(x>niz[m]){
       l = m+1;
     }else{
@@ -34,5 +34,6 @@ int main(){
     }
   }
 
-  return 0;
+  return 0; //exit kodovi kazu da je 0 sucessful, a 1 nije, ali u ovaj slucaj za funkciju
+  //mozemo da kazemo obrnuto
 }
