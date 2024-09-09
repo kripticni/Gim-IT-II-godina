@@ -53,7 +53,7 @@ int prost3for(int n){
     return 1;
 }
 
-void EratostenovoSito(int n, int* stanja){
+void EratostenovoSito(int n, bool* stanja){ //nalazi sve brojeve od 1 do N
   int i, p=2;
   for(;p*p<=n;p++){
     if(stanja[p] == false) {
@@ -65,7 +65,19 @@ void EratostenovoSito(int n, int* stanja){
     if(!stanja[p])
       printf("%d ",p);
 }
+    
+//obican euklidov algoritam pronalazi samo nzd, a prosireni takodje nalazi brojeve x i y
+//ax+by = nzd(a,b)
+//uzajamno prosti brojevi su oni ciji je nzd 1
+//nalazi dva cela broja x i y od kojih ce uglavnom jedan biti negativan, koji sluzi za bezuovu teoremu
+void prosireniEuklidov(){
+    
+}
 
+//nalazi uzajamno proste brojeve sa brojem N
+void eulerova()
+
+//rastavljanje broja na proste cinioce
 int main(){
   int n;
   printf("Unesite broj: ");
@@ -73,7 +85,7 @@ int main(){
   (prost1(n) && prost2(n) && prost3(n) && prost1for(n) && prost2for(n) && prost3for(n))?printf("Prost broj.\n"):printf("Nije prost broj.\n");
   printf("Unesi broj do koga se traze prosti: ");
   scanf("%i", &n);
-  int* prosti = (int*)calloc(n, sizeof(int));
+  bool* prosti = (bool*)calloc(n, sizeof(bool));
   EratostenovoSito(n, prosti);
   return 0;
 }
