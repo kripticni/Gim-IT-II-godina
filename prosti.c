@@ -65,27 +65,77 @@ void EratostenovoSito(int n, bool* stanja){ //nalazi sve brojeve od 1 do N
     if(!stanja[p])
       printf("%d ",p);
 }
-    
+
+int euklidovRec(int a, int b){
+  if(a == 0)
+    return b;
+  return euklidovRec(b%a, a);
+}
+
+int euklidov(int a, int b){
+  while(b!=0){
+    int pom = b;
+    b = a%b;
+    a = pom;
+  }
+  return a;
+}
+
 //obican euklidov algoritam pronalazi samo nzd, a prosireni takodje nalazi brojeve x i y
 //ax+by = nzd(a,b)
 //uzajamno prosti brojevi su oni ciji je nzd 1
 //nalazi dva cela broja x i y od kojih ce uglavnom jedan biti negativan, koji sluzi za bezuovu teoremu
-void prosireniEuklidov(){
-    
+int prosirenEuklidov(int a, int b, int *x, int *y){
+    if(a == 0){
+        *x = 0;
+        *y = 1;
+        return b;
+    }
+
+    int x1, y1; //ovde cuvamo podatke koje dobijemo iz rekurzije
+    int rec = prosirenEuklidov(b%a, a, &x1, &y1);
+
+    *x = y1 - (b/a) * x1; //nzd(a,b) = rec, iz formule ax+by = rec onda x = (rec-by)/a 
+    *y = x1; //ax + by iz funkcije je takodje ax+by = (b%a)x1 + ay1, sto je ax + by = a(y1 - [b/a]*x1)+bx1
+             //onda sledi da je x=y1-[b/a]*x1
+
+    return rec;
 }
 
 //nalazi uzajamno proste brojeve sa brojem N
-void eulerova()
+int eulerova(int n){
+  int rezultat = 0, i=1;
+  for(;i<=n;i++){
+    if(euklidov(i, n) == 1){
+      ++rezultat;
+    }
+  }
+  return rezultat;
+}
 
 //rastavljanje broja na proste cinioce
 int main(){
-  int n;
+  int n, a, b, x, y, NZD;
   printf("Unesite broj: ");
   scanf("%i", &n);
+
   (prost1(n) && prost2(n) && prost3(n) && prost1for(n) && prost2for(n) && prost3for(n))?printf("Prost broj.\n"):printf("Nije prost broj.\n");
+
   printf("Unesi broj do koga se traze prosti: ");
   scanf("%i", &n);
   bool* prosti = (bool*)calloc(n, sizeof(bool));
   EratostenovoSito(n, prosti);
+
+  printf("\nPo eulerovom algoritmu,\nbroj uzajamno prostih brojeva sa N je: %i", eulerova(n));
+
+
+  printf("\nUnesi A za euklidov algoritam: ");
+  scanf("%i", &a);
+  printf("Unesi B: ");
+  scanf("%i", &b);
+  NZD = prosirenEuklidov(a, b, &x, &y);
+  printf("\nNZD: %i\n X: %i\n y: %i", NZD, x, y);
+
+
   return 0;
 }
