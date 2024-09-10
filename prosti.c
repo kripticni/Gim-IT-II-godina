@@ -113,6 +113,24 @@ int eulerova(int n){
   return rezultat;
 }
 
+void prostiCinioci(int n){
+  while(n%2==0){
+    printf("%d ", 2);
+    n=n/2;
+  }
+
+  int i=3;
+  for(;i*i<=n;i=i+2){
+    while(n%i==0){
+      printf("%d ", i);
+      n=n/i;
+    }
+  }
+
+  if(n>2)
+    printf("%d ", n);
+}
+
 //rastavljanje broja na proste cinioce
 int main(){
   int n, a, b, x, y, NZD;
@@ -125,6 +143,9 @@ int main(){
   scanf("%i", &n);
   bool* prosti = (bool*)calloc(n, sizeof(bool));
   EratostenovoSito(n, prosti);
+  printf("\nProsti cinioci broja %i su: ", n);
+  prostiCinioci(n);
+
 
   printf("\nPo eulerovom algoritmu,\nbroj uzajamno prostih brojeva sa N je: %i", eulerova(n));
 
