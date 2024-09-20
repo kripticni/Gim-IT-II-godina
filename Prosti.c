@@ -84,11 +84,12 @@ int sumaDelioca3(int n){
 
 int sumaDelioca4(int n){
     int i=1,s=0;
-    for(;i*i<=n;i++){
+    for(;i*i<=n;++i){
         if(n%i==0){
             s+=i+n/i;
         }
     }
+    i--;
     if(i*i==n) s-=n/i;
     return s;
 }
@@ -189,7 +190,7 @@ int main(){
   printf("\nProsti cinioci broja %i su: ", n);
   prostiCinioci(n);
   printf("\nSuma delioca broja %i su: %i", n, sumaDelioca3(n));
-  printf("\nSuma delioca broja %i su: %i", n, sumaDelioca1(n));
+  printf("\nSuma delioca broja %i su: %i", n, sumaDelioca4(n));
 
 
   printf("\nPo eulerovom algoritmu, broj uzajamno prostih brojeva sa N je: %i", eulerova(n));
