@@ -1,0 +1,54 @@
+String je niz tipa karakter sa null byte (null terminator ili '\0') na kraju.
+char c; //zauzima 8 bita
+c = getchar(); //uzima karakter iz standardnog ulaza i cuva ga u promenjivu c
+putchar(c); //ispisuje karakter na standardan izlaz
+
+inicijalizovanje:
+char string1[] = "gimnazija"; //tacno dovoljno mesta za string
+char string2[30] = "gimnazija"; //proizvoljno mesto
+
+zato sto su stringovi zapravo nizovi karaktera,
+sa njima se moze koristiti aritmetika pokazivaca
+
+za to nam treba pokazivac tipa karakter koji pokazuje na dati string
+char* pok = string1; //pok ima adresu pocetka stringa "gimnazija"
+umesto pok = string1; isto znacenje ima i
+pok = &string1[0];   //u oba slucaja pok sada pokazuje na adresu nultog elementa stringa
+
+naprimer, za string1 (od iznad),
+*(pok), daje rezultat 'g'
+*(pok + 1), daje rezultat 'i'
+
+puts(string1); //ispisuje sve karaktere do '\0'
+//i izgleda ovako
+char s[] = "gimnazija";
+char* p = s
+while(*p!='\0'){
+        putchar(*p);
+        p++; //povecava adresu pokazivaca za jedan karakter niza
+}
+
+unazad bi bilo
+while(*p!='\0') p++; //dolazi do kraja stringa, odnosno null terminatora
+p--; //zadnji karakter niza
+while(p>=s){ //da li je adresa karaktera na koji
+             //pokazuje p veca od pocetka stringa
+        putchar(*p);
+        p--;
+}
+
+ako unosimo nesto sa scanf, pa posle zelimo da unesemo string preko gets
+moramo da izbrisemo novu liniju, a to se radi sa
+while(getchar()!='\n');
+
+nizovi stringova, odnosno multidimenzionalni nizovi karaktera
+char niz_str[4][10];
+rezervise memorijski prostor za 4 stringa duzine od 9 karaktera (jedan karakter je '\0')
+
+Biblioteka sa funkcijama za manipulisanje stringovima je string.h
+funkcije iz biblioteke:
+strlen, odredjuje duzinu stringa
+strcpy, kopira na destinaciju od izvora
+
+
+
