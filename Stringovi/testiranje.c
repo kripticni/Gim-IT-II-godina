@@ -41,7 +41,18 @@ char *umetni(char *dest, char *src, unsigned int p) {
   return dest;
 }
 
+char *obrni_string(char *str) {
+  unsigned int i, len = strlen(str);
+  char pom;
+  for (i = 0; i < len / 2; i++) {
+    pom = *(str + i);
+    *(str + i) = *(str + len - i - 1);
+    *(str + len - i - 1) = pom;
+  }
+};
+
 int main() {
   char str[40] = "gimnazija";
-  puts(umetni(str, "bora", 3));
+  obrni_string(str);
+  puts(str);
 };
