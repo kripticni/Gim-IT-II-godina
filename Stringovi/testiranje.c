@@ -52,7 +52,9 @@ char *obrni_string(char *str) {
 };
 
 int main() {
-  char str[40] = "gimnazija";
-  obrni_string(str);
-  puts(str);
+  char str[40] = "skola";
+  printf("Puts: ");
+  ispis_zadnjih(str, 3);
+  printf("\nPutchar: ");
+  ispis_zadnjih_unazad(str, 3);
 };
